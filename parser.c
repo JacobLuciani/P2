@@ -55,14 +55,12 @@ Node *block() {
 	//check for structure { <vars> <stats> }
 	//add terminals to current node if they are found
 	if ( token.tokenId == spcTok && token.tokenInstance == "{" ) {
-		addToNode(blockNode, token.tokenInstance);
 		token = scan->getNextToken();
 		
 		blockNode->branch1 = vars();
 		blockNode->branch2 = stats();
 		
 		if ( token.tokenId == spcTok && token.tokenInstance == "}" ) {
-			addToNode(blockNode, token.tokenInstance);
 			token = scan->getNextToken();
 			
 			return blockNode;
@@ -85,7 +83,6 @@ Node *vars() {
 	//check for structure declare Identifier := Number ; <vars>
 	//add terminals to current node if they are found
 	if ( token.tokenId == kwTok && token.tokenInstance == "declare" ) {
-		addToNode(varsNode, token.tokenInstance);
 		token = scan->getNextToken();
 		
 		if ( token.tokenId == idTok ) {
@@ -93,7 +90,6 @@ Node *vars() {
 			token = scan->getNextToken();
 			
 			if ( token.tokenId == spcTok && token.tokenInstance == ":=" ) {
-				addToNode(varsNode, token.tokenInstance);
 				token = scan->getNextToken();
 				
 				if ( token.tokenId == numTok ) {
@@ -101,7 +97,6 @@ Node *vars() {
 					token = scan->getNextToken();
 					
 					if ( token.tokenId == spcTok && token.tokenInstance == ";" ) {
-						addToNode(varsNode, token.tokenInstance);
 						token = scan->getNextToken();
 						
 						varsNode->branch1 = vars();
@@ -139,7 +134,6 @@ Node *expr() {
 	//check for - <expr>
 	//add terminals to current node if they are found
 	if ( token.tokenId == spcTok && token.tokenInstance == "-" ) {
-		addToNode(exprNode, token.tokenInstance);
 		token = scan->getNextToken();
 		
 		exprNode->branch2 = expr();
@@ -181,7 +175,6 @@ Node *A() {
 	//check for + <A>
 	//add terminals to current node if they are found
 	if (token.tokenId == spcTok && token.tokenInstance == "+" ) {
-		addToNode(aNode, token.tokenInstance);
 		token = scan->getNextToken();
 		
 		aNode->branch2 = A();
@@ -200,7 +193,6 @@ Node *M() {
 	//check for * <M>
 	//add terminals to current node if they are found
 	if ( token.tokenId == spcTok && token.tokenInstance == "*" ) {
-		addToNode(mNode, token.tokenInstance);
 		token = scan->getNextToken();
 		
 		mNode->branch1 = M();
@@ -220,13 +212,11 @@ Node *R() {
 	//check for expected structure
 	//add terminals to current node if they are found
 	if ( token.tokenId == spcTok && token.tokenInstance == "(" ) { // ( <expr> )
-		addToNode(rNode, token.tokenInstance);
 		token = scan->getNextToken();
 		
 		rNode->branch1 = expr();
 		
 		if ( token.tokenId == spcTok && token.tokenInstance == ")" ) {
-			addToNode(rNode, token.tokenInstance);
 			token = scan->getNextToken();
 			
 			return rNode;
@@ -304,7 +294,6 @@ Node *stat() {
 			exit(1);
 		}
 		if ( token.tokenId == spcTok && token.tokenInstance == ";" ) { //checks for ; after all options except <block>
-			addToNode(statNode, token.tokenInstance);
 			token = scan->getNextToken();
 			
 			return statNode;
@@ -324,7 +313,6 @@ Node *in() {
 	//check for correct structure
 	//add terminals to current node if they are found
 	if ( token.tokenId == kwTok && token.tokenInstance == "in" ) {
-		addToNode(inNode, token.tokenInstance);
 		token = scan->getNextToken();
 		
 		if ( token.tokenId == idTok ) {
@@ -350,7 +338,6 @@ Node *out() {
 	//check for correct structure
 	//add terminals to current node if they are found
 	if ( token.tokenId == kwTok && token.tokenInstance == "out" ) {
-		addToNode(outNode, token.tokenInstance);
 		token = scan->getNextToken();
 		outNode->branch1 = expr();
 	} else {
@@ -368,11 +355,9 @@ Node *ifNonTerminal() {
 	//check for correct structure: <if> [ <epxr> <RO> <expr> ] then <stats>
 	//add terminals to current node if they are found
 	if ( token.tokenId == kwTok && token.tokenInstance == "iffy" ) {
-		addToNode(ifNode, token.tokenInstance);
 		token = scan->getNextToken();
 		
 		if ( token.tokenId == spcTok && token.tokenInstance == "[" ) {
-			addToNode(ifNode, token.tokenInstance);
 			token = scan->getNextToken();
 			
 			ifNode->branch1 = expr();
@@ -380,11 +365,9 @@ Node *ifNonTerminal() {
 			ifNode->branch3 = expr();
 			
 			if ( token.tokenId == spcTok && token.tokenInstance == "]" ) {
-				addToNode(ifNode, token.tokenInstance);
 				token = scan->getNextToken();
 				
 				if ( token.tokenId == kwTok && token.tokenInstance == "then" ) {
-					addToNode(ifNode, token.tokenInstance);
 					token = scan->getNextToken();
 					
 					ifNode->branch4 = stat();
@@ -416,11 +399,9 @@ Node *loop() {
 	//check for correct structure: <loop> [ <expr> <RO> <expr> ] then <stat>
 	//add terminals to current node if they are found
 	if ( token.tokenId == kwTok && token.tokenInstance == "loop" ) {
-		addToNode(loopNode, token.tokenInstance);
 		token = scan->getNextToken();
 		
 		if ( token.tokenId == spcTok && token.tokenInstance == "[" ) {
-			addToNode(loopNode, token.tokenInstance);
 			token = scan->getNextToken();
 			
 			loopNode->branch1 = expr();
@@ -428,7 +409,6 @@ Node *loop() {
 			loopNode->branch3 = expr();
 			
 			if ( token.tokenId == spcTok && token.tokenInstance == "]" ) {
-				addToNode(loopNode, token.tokenInstance);
 				token = scan->getNextToken();
 				
 				loopNode -> branch4 = stat();
@@ -460,7 +440,6 @@ Node *assign() {
 		token = scan->getNextToken();
 		
 		if ( token.tokenId == spcTok && token.tokenInstance == ":=" ) {
-			addToNode(assignNode, token.tokenInstance);
 			token = scan->getNextToken();
 			
 			assignNode->branch1 = expr();
@@ -484,7 +463,6 @@ Node *label() {
 	//check for correct structure
 	//add terminals to current node if they are found
 	if ( token.tokenId == kwTok && token.tokenInstance == "label" ) {
-		addToNode(labelNode, token.tokenInstance);
 		token = scan->getNextToken();
 		
 		if ( token.tokenId == idTok ) {
@@ -511,7 +489,6 @@ Node *gotoNonTerminal() {
 	//check for correct structure
 	//add terminals to current node if they are found
 	if ( token.tokenId == kwTok && token.tokenInstance == "goto" ) {
-		addToNode(gotoNode, token.tokenInstance);
 		token = scan->getNextToken();
 		if ( token.tokenId == idTok ) {
 			addToNode(gotoNode, token.tokenInstance);
